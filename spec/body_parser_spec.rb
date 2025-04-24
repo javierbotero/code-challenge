@@ -47,6 +47,7 @@ RSpec.describe BodyParser do
 
       expect(painting['extensions'].all?{ |ext| ext.match(/\d{4}/) }).to be_truthy
       expect(painting['name']).to be_a(String)
+      expect(painting['name']).to eq("Death of Pablo Escobar")
       expect(painting['link']).to be_a(String)
     end
   end
