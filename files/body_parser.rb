@@ -10,9 +10,19 @@ class BodyParser
   end
 
   def call
-    response = HTTParty.get(url)
-    @document = Nokogiri::HTML(response.body)
-    @images = { artworks: get_images }.to_json
+    begin
+      response = HTTParty.get(url)
+      if response.success?
+        @document = Nokogiri::HTML(response.body)
+        @images = { artworks: get_images }.to_json
+      else
+        warn "HTTP Error fetching #{url}: #{response.code}"
+      end
+    rescue StandardError => e
+      warn "Error fetching or parsing: #{e.message}"
+      self.document = nil
+      self.images = nil
+    end
   end
 
   private
